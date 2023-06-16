@@ -39,11 +39,12 @@ const playGame = (()=>{
     function removeClick(){
         boxes.forEach((box) => box.removeEventListener('click', markBox));
     }
+
     addClick();
 
     //Dictates who starts the game;
-    let symbol = 'X';
     let currentPlayer = player1;
+    let symbol = player1.symbol;
     
     function markBox(e) {
         const targetArrayIndex = e.target.id;
