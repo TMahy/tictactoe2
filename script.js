@@ -51,13 +51,12 @@ const playGame = (()=>{
 
         if(board[targetArrayIndex] === ' '){
             board.splice(targetArrayIndex, 1, symbol)
-        }
-        
-        render();
-        checkWin();
+            render();
+            checkWin();
 
-        symbol = symbol === 'X' ? 'O' : 'X';
-        currentPlayer = currentPlayer === player1 ? player2 : player1;
+            symbol = symbol === 'X' ? 'O' : 'X';
+            currentPlayer = currentPlayer === player1 ? player2 : player1;
+        }
     }
 
     function checkWin(){
