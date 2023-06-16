@@ -54,7 +54,7 @@ const playGame = (()=>{
         
         render();
         checkWin();
-        
+
         symbol = symbol === 'X' ? 'O' : 'X';
         currentPlayer = currentPlayer === player1 ? player2 : player1;
     }
@@ -112,12 +112,4 @@ const playGame = (()=>{
     return;
 })();
 
-
-
-
-/* TO DO
-    
-    - Check if anyone has won (or drawn)
-
-*/ 
 
