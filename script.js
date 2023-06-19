@@ -32,6 +32,7 @@ const playGame = (()=>{
     const boxes = document.querySelectorAll('.box');
     const resetBtn = document.getElementById('resetBtn');
         resetBtn.addEventListener('click', resetGame);
+    const resultDiv = document.getElementById('result');
 
     function addClick(){
         boxes.forEach((box) => box.addEventListener('click', markBox));
@@ -63,6 +64,7 @@ const playGame = (()=>{
         //Check draw
         if(board.every(function(e){return e !== ' '})){ 
             console.log(`It's a Draw!`);
+            resultDiv.textContent = `It's a Draw!`
             removeClick();
         }
         //Check win
@@ -94,6 +96,8 @@ const playGame = (()=>{
 
             if(win){
                 console.log(`${currentPlayer.name} wins!`)
+                resultDiv.textContent = `${currentPlayer.name} wins!`
+                resultDiv.style.display = 'block';
                 removeClick();
             }
         }
@@ -105,6 +109,8 @@ const playGame = (()=>{
         for(let i = 0; i< board.length; i++){
             board[i] = ' ';
         }
+        resultDiv.textContent = '';
+        resultDiv.style.display = 'none';
         addClick();
         render();
     }
