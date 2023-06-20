@@ -1,13 +1,20 @@
 /* General Styles */
+*{
+    /* border: 1px solid black; */
+}
+
 
 body{
     position: relative;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 h1{
-    margin: 20px;
+    margin: 10px;
+    margin-top: 0px;
     color: rgb(105, 105, 105);
     letter-spacing: 2px;
 }
@@ -19,9 +26,9 @@ h1 span{
 /* Starting screen */
 #start-screen{
     position: absolute;
-    background: transparent;
+    background: rgba(115, 115, 115, 0.7);
     width: 100%;
-    height: 95vh;
+    height: 100vh;
     top: 0;
     z-index: 10;
     display: block;
@@ -30,16 +37,22 @@ h1 span{
 #name-entry-container{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content:center;
+    gap: 10px;
     position: relative;
     border-radius: 10px;
     background: rgba(255, 255, 255);
-    width: 340px;
-    height: 280px;
+    width: 320px;
+    height: 220px;
     margin: 0 auto;
     top: 10%;
     outline: 5px solid  rgb(105, 105, 105);;
 
+}
+
+#name-entry-container h1{
+    font-size: 20px;
+    margin: 0px;
 }
 
 #num-players-container{
@@ -50,10 +63,11 @@ h1 span{
 .num-player-btn{
     display: inline-block;
     position: relative;
-    margin-top: 20px;
     min-width: 120px;
     height: 38px;
     padding: 8px 7px 9px;
+
+    margin-top: 20px;
 
     outline: none;
     cursor:pointer;
