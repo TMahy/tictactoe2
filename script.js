@@ -65,6 +65,7 @@ const playGame = (()=>{
         if(board.every(function(e){return e !== ' '})){ 
             console.log(`It's a Draw!`);
             resultDiv.textContent = `It's a Draw!`
+            resultDiv.style.display = 'block';
             removeClick();
         }
         //Check win
