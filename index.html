@@ -9,6 +9,23 @@
 </head>
 <body>
     <h1><span>T</span>ic <span>T</span>ac <span>T</span>oe</h1>
+    <div id="start-screen">
+        <div id="name-entry-container">
+            <div id="p1-entry-container">
+                <div>Player 1</div>
+                <input type="text" placeholder="Input name" maxlength="10">
+            </div>
+            <div id="p2-entry-container">
+                <div>Player 2</div>
+                <input type="text" placeholder="Input name" maxlength="10">
+            </div>
+            <div id="num-players-container">
+                <p></p>
+                <button id="single-player" class="btn num-player-btn">1 Player</button>
+                <button id="two-player" class="btn num-player-btn">2 Player</button>
+            </div>
+        </div>
+    </div>
     <div id="game-container">
         <div id='box-container'>
             <div id='0' class='box box0'></div>
@@ -23,7 +40,7 @@
         </div>
         <div id='result'>Player1 wins!</div>
     </div>
-    <button id='resetBtn'>Reset</button>  
+    <button id='resetBtn'>Reset</button>
 </body>
 <script src="script.js"></script>
 </html>

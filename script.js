@@ -41,11 +41,21 @@ const playGame = (()=>{
         boxes.forEach((box) => box.removeEventListener('click', markBox));
     }
 
+    function p1Hover(){
+        boxes.forEach((box) => box.classList.remove('player2-hover'))
+        boxes.forEach((box) => {if(box.textContent === ' '){box.classList.add('player1-hover')}})
+    }
+    function p2Hover(){
+        boxes.forEach((box) => box.classList.remove('player1-hover'))
+        boxes.forEach((box) => {if(box.textContent === ' '){box.classList.add('player2-hover')}})
+    }
+
     addClick();
 
     //Dictates who starts the game;
     let currentPlayer = player1;
     let symbol = player1.symbol;
+        boxes.forEach((box) => box.classList.add('player1-hover'))
     
     function markBox(e) {
         const targetArrayIndex = e.target.id;
@@ -57,6 +67,11 @@ const playGame = (()=>{
 
             symbol = symbol === 'X' ? 'O' : 'X';
             currentPlayer = currentPlayer === player1 ? player2 : player1;
+            if(currentPlayer === player1){
+                p1Hover();
+            }else if(currentPlayer === player2){
+                p2Hover();
+            }
         }
     }
 
@@ -114,6 +129,7 @@ const playGame = (()=>{
         resultDiv.style.display = 'none';
         addClick();
         render();
+        p1Hover();
     }
 
     return;
