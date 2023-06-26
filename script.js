@@ -21,6 +21,23 @@ const Player = (name, symbol) =>{
     return {name, symbol};
 }
 
+let singlePlayer = false; 
+
+const singlePlayerBtn = document.getElementById('single-player');
+    singlePlayerBtn.addEventListener('click', gameSetup);
+const twoPlayerBtn = document.getElementById('two-player');
+    twoPlayerBtn.addEventListener('click', gameSetup);
+
+function gameSetup(e) {
+    document.getElementById('start-screen').style.display = 'none';
+
+    if(e.target.id === 'single-player'){
+        singlePlayer = true;
+    } else{
+        singlePlayer = false;
+    }
+}
+
 const player1 = Player('Player 1', 'X');
 const player2 = Player('Player 2', 'O');
 
@@ -63,7 +80,14 @@ const playGame = (()=>{
         if(board[targetArrayIndex] === ' '){
             board.splice(targetArrayIndex, 1, symbol)
             render();
-            checkWin();
+            displayWin(checkWin());
+
+            if(singlePlayer){
+                console.log('AI-move')
+                symbol = 'O';
+                currentPlayer = player2;
+                moveAI();
+            }
 
             symbol = symbol === 'X' ? 'O' : 'X';
             currentPlayer = currentPlayer === player1 ? player2 : player1;
@@ -71,6 +95,7 @@ const playGame = (()=>{
                 p1Hover();
             }else if(currentPlayer === player2){
                 p2Hover();
+            
             }
         }
     }
@@ -78,10 +103,7 @@ const playGame = (()=>{
     function checkWin(){
         //Check draw
         if(board.every(function(e){return e !== ' '})){ 
-            console.log(`It's a Draw!`);
-            resultDiv.textContent = `It's a Draw!`
-            resultDiv.style.display = 'block';
-            removeClick();
+            return 'draw'
         }
         //Check win
         else{
@@ -109,13 +131,22 @@ const playGame = (()=>{
                     break;
                 }
             }
+            return win;
+        }
+    }
 
-            if(win){
-                console.log(`${currentPlayer.name} wins!`)
-                resultDiv.textContent = `${currentPlayer.name} wins!`
-                resultDiv.style.display = 'block';
-                removeClick();
-            }
+    function displayWin(win){
+        if(win === true){
+        console.log(`${currentPlayer.name} wins!`)
+        resultDiv.textContent = `${currentPlayer.name} wins!`
+        resultDiv.style.display = 'block';
+        removeClick();
+        }
+        else if(win === 'draw'){
+        console.log(`It's a Draw!`);
+        resultDiv.textContent = `It's a Draw!`
+        resultDiv.style.display = 'block';
+        removeClick();
         }
     }
 
@@ -130,6 +161,18 @@ const playGame = (()=>{
         addClick();
         render();
         p1Hover();
+        document.getElementById('start-screen').style.display = 'block';
+    }
+
+    function moveAI(){
+        availableBoxes = board.filter(box => box != "X" && box != "O");
+        let index = minimax(board, player2).index;
+        board.splice(index, 1, player2.symbol);
+        render();
+    }
+
+    function minimax(board, player){
+        return {index: 1, score: 10};
     }
 
     return;
