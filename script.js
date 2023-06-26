@@ -80,7 +80,7 @@ const playGame = (()=>{
         if(board[targetArrayIndex] === ' '){
             board.splice(targetArrayIndex, 1, symbol)
             render();
-            displayWin(checkWin());
+            displayWin(checkWin(board, currentPlayer));
 
             if(singlePlayer){
                 console.log('AI-move')
@@ -100,7 +100,7 @@ const playGame = (()=>{
         }
     }
 
-    function checkWin(){
+    function checkWin(board, player){
         //Check draw
         if(board.every(function(e){return e !== ' '})){ 
             return 'draw'
@@ -126,7 +126,7 @@ const playGame = (()=>{
         
                 if(cellA == " " || cellB == " " || cellC==" "){
                     continue;
-                }else if(cellA == cellB && cellB == cellC){
+                }else if(cellA == player.symbol && cellA == cellB && cellB == cellC){
                     win = true;
                     break;
                 }
@@ -165,14 +165,66 @@ const playGame = (()=>{
     }
 
     function moveAI(){
-        availableBoxes = board.filter(box => box != "X" && box != "O");
-        let index = minimax(board, player2).index;
+        const boardCopy = board;
+        let index = minimax(boardCopy, player2).index;
+        console.log(index);
         board.splice(index, 1, player2.symbol);
         render();
+        displayWin(checkWin(board, player2));
     }
 
-    function minimax(board, player){
-        return {index: 1, score: 10};
+    function minimax(reboard, player){
+        let availableIndex = reboard.reduce(function (ind, el, i){
+            if(el === ' '){
+                ind.push(i);
+            }
+            return ind;
+        }, []);
+
+        if(checkWin(reboard, player1)){
+            return {score: -10};
+        }else if(checkWin(reboard, player2)){
+            return {score: 10};
+        }else if(availableIndex.length === 0){
+            return {score: 0}
+        }
+        // console.log(availableIndex);
+        const moves = [];
+        for(let i = 0; i<availableIndex.length; i++){
+            const move = {};
+            move.index = availableIndex[i];
+            reboard[availableIndex[i]] = player.symbol;
+
+            if(player === player2){
+                move.score = minimax(reboard, player1).score;
+            }else{
+                move.score = minimax(reboard, player2).score;
+            }
+            reboard[availableIndex[i]] = ' ';
+            moves.push(move);
+        }
+
+        let bestMove; 
+        if(player === player2){
+            let bestScore = -10000;
+            for(let i = 0; i < moves.length; i++){
+                if(moves[i].score > bestScore){
+                    bestScore = moves[i].score;
+                    bestMove = moves[i];
+                }
+            }
+        } else{
+            let bestScore = 10000;
+            for(let i = 0; i < moves.length; i++){
+                if(moves[i].score < bestScore){
+                    bestScore = moves[i].score;
+                    bestMove = moves[i];
+                }
+            }
+        }
+        console.log(moves)
+        // console.log(board, availableIndex, bestMove)
+        return bestMove;
     }
 
     return;
