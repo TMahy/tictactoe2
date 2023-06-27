@@ -83,7 +83,6 @@ const playGame = (()=>{
             displayWin(checkWin(board, currentPlayer));
 
             if(singlePlayer){
-                console.log('AI-move')
                 symbol = 'O';
                 currentPlayer = player2;
                 moveAI();
@@ -127,8 +126,9 @@ const playGame = (()=>{
             }
         }
         if(board.every(function(e){return e !== ' '})){ 
-            return 'draw'
+            win = 'draw';
         }
+
         return win;
             
     }
@@ -176,7 +176,7 @@ const playGame = (()=>{
 
     function minimax(reboard, player){
 
-        let availableIndex = reboard.reduce(function (ind, el, i){
+        const availableIndex = reboard.reduce(function (ind, el, i){
             if(el === ' '){
                 ind.push(i);
             }
@@ -192,7 +192,7 @@ const playGame = (()=>{
         }
 
         const moves = [];
-        for(let i = 0; i<availableIndex.length; i++){
+        for(let i = 0; i < availableIndex.length; i++){
             const move = {index: availableIndex[i], score: 0};
             
             reboard[availableIndex[i]] = player.symbol;
