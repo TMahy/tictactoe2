@@ -101,38 +101,36 @@ const playGame = (()=>{
     }
 
     function checkWin(board, player){
-        //Check draw
+        //Check win
+        let win = false;
+        const winConditions = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ];
+        for(let i= 0; i < winConditions.length; i++){
+            const condition = winConditions[i];
+            const cellA = board[condition[0]];
+            const cellB = board[condition[1]];
+            const cellC = board[condition[2]];
+    
+            if(cellA === ' ' || cellB === ' ' || cellC === ' '){
+                continue;
+            }else if(cellA === player.symbol && cellA === cellB && cellB === cellC){
+                win = true;
+                break;
+            }
+        }
         if(board.every(function(e){return e !== ' '})){ 
             return 'draw'
         }
-        //Check win
-        else{
-            let win = false;
-            const winConditions = [
-                [0,1,2],
-                [3,4,5],
-                [6,7,8],
-                [0,3,6],
-                [1,4,7],
-                [2,5,8],
-                [0,4,8],
-                [2,4,6]
-            ];
-            for(let i= 0; i < winConditions.length; i++){
-                const condition = winConditions[i];
-                const cellA = board[condition[0]];
-                const cellB = board[condition[1]];
-                const cellC = board[condition[2]];
-        
-                if(cellA == " " || cellB == " " || cellC==" "){
-                    continue;
-                }else if(cellA == player.symbol && cellA == cellB && cellB == cellC){
-                    win = true;
-                    break;
-                }
-            }
-            return win;
-        }
+        return win;
+            
     }
 
     function displayWin(win){
@@ -141,13 +139,16 @@ const playGame = (()=>{
         resultDiv.textContent = `${currentPlayer.name} wins!`
         resultDiv.style.display = 'block';
         removeClick();
+        singlePlayer = false;
         }
         else if(win === 'draw'){
         console.log(`It's a Draw!`);
         resultDiv.textContent = `It's a Draw!`
         resultDiv.style.display = 'block';
         removeClick();
+        singlePlayer = false;
         }
+        
     }
 
     function resetGame(){
@@ -166,14 +167,15 @@ const playGame = (()=>{
 
     function moveAI(){
         const boardCopy = board;
-        let index = minimax(boardCopy, player2).index;
-        console.log(index);
-        board.splice(index, 1, player2.symbol);
+        const move = minimax(boardCopy, player2);
+        console.log(move)
+        board.splice(move.index, 1, player2.symbol);
         render();
-        displayWin(checkWin(board, player2));
+        displayWin(checkWin(board, player2))
     }
 
     function minimax(reboard, player){
+
         let availableIndex = reboard.reduce(function (ind, el, i){
             if(el === ' '){
                 ind.push(i);
@@ -186,19 +188,21 @@ const playGame = (()=>{
         }else if(checkWin(reboard, player2)){
             return {score: 10};
         }else if(availableIndex.length === 0){
-            return {score: 0}
+            return {score: 0};
         }
-        // console.log(availableIndex);
+
         const moves = [];
         for(let i = 0; i<availableIndex.length; i++){
-            const move = {};
-            move.index = availableIndex[i];
+            const move = {index: availableIndex[i], score: 0};
+            
             reboard[availableIndex[i]] = player.symbol;
 
             if(player === player2){
-                move.score = minimax(reboard, player1).score;
-            }else{
-                move.score = minimax(reboard, player2).score;
+                const g = minimax(reboard, player1);
+                move.score = g.score;
+            }else if(player === player1){
+                const g = minimax(reboard, player2);
+                move.score = g.score;
             }
             reboard[availableIndex[i]] = ' ';
             moves.push(move);
@@ -210,21 +214,19 @@ const playGame = (()=>{
             for(let i = 0; i < moves.length; i++){
                 if(moves[i].score > bestScore){
                     bestScore = moves[i].score;
-                    bestMove = moves[i];
+                    bestMove = i;
                 }
             }
-        } else{
+        } else if(player === player1){
             let bestScore = 10000;
             for(let i = 0; i < moves.length; i++){
                 if(moves[i].score < bestScore){
                     bestScore = moves[i].score;
-                    bestMove = moves[i];
+                    bestMove = i;
                 }
             }
         }
-        console.log(moves)
-        // console.log(board, availableIndex, bestMove)
-        return bestMove;
+        return moves[bestMove];
     }
 
     return;
